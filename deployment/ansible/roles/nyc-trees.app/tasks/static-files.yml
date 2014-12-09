@@ -33,7 +33,7 @@
   sudo_user: nyc-trees
 
 - name: Create static files and run collectstatic (staging/production)
-  command: "./node_modules/.bin/gulp build"
+  command: "./node_modules/.bin/gulp"
   args:
     chdir: "{{ app_home }}"
   sudo_user: nyc-trees
