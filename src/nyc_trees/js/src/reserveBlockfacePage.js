@@ -15,12 +15,41 @@ var $ = require('jquery'),
 
 // Extends the leaflet object
 require('leaflet-utfgrid');
+require('leaflet-draw');
 
 var reservationMap = mapModule.create({
     geolocation: true,
     legend: true,
     search: true
 });
+
+reservationMap.on('draw:created', function (e) {
+    var type = e.layerType,
+        layer = e.layer;
+    reservationMap.addLayer(layer);
+    console.log(toWKT(layer));
+});
+
+function toWKT(layer) {
+    var lng, lat, coords = [];
+    if (layer instanceof L.Polygon || layer instanceof L.Polyline) {
+        var latlngs = layer.getLatLngs();
+        for (var i = 0; i < latlngs.length; i++) {
+            coords.push(latlngs[i].lng + " " + latlngs[i].lat);
+            if (i === 0) {
+                lng = latlngs[i].lng;
+                lat = latlngs[i].lat;
+            }
+    };
+        if (layer instanceof L.Polygon) {
+            return "POLYGON((" + coords.join(",") + "," + lng + " " + lat + "))";
+        } else if (layer instanceof L.Polyline) {
+            return "LINESTRING(" + coords.join(",") + ")";
+        }
+    } else if (layer instanceof L.Marker) {
+        return "POINT(" + layer.getLatLng().lng + " " + layer.getLatLng().lat + ")";
+    }
+}
 
 L.tileLayer(config.urls.layers.reservable.tiles, {
     maxZoom: zoom.MAX

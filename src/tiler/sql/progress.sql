@@ -5,6 +5,8 @@
   block.geom, block.id, turf.group_id,
   CASE
     WHEN survey.id IS NOT NULL THEN 'surveyed-by-others'
+    WHEN turf.id IS NOT NULL and turf.group_id = 1 THEN 'red'
+    WHEN turf.id IS NOT NULL and turf.group_id = 2 THEN 'blue'
     WHEN (turf.id IS NULL AND block.is_available AND reservation.id IS NULL) THEN 'available'
     ELSE 'unavailable'
   END AS survey_type

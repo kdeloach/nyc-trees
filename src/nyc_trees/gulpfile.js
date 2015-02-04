@@ -54,6 +54,7 @@ var args = minimist(process.argv.slice(2),
     vendorCssFiles = [
         'css/**/*.css',
         'node_modules/leaflet/dist/leaflet.css',
+        'node_modules/leaflet-draw/dist/leaflet.draw.css',
         'node_modules/toastr/toastr.css'
     ],
 

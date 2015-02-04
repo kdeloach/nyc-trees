@@ -33,4 +33,10 @@
   [survey_type = 'unavailable'] {
     line-color: @unavailable;
   }
+  [survey_type = 'red'] {
+    line-color: #f00;
+  }
+  [survey_type = 'blue'] {
+    line-color: #00f;
+  }
 }
