@@ -110,9 +110,7 @@ var dom = {
 
     formTemplate = Handlebars.compile($(dom.treeFormTemplate).html()),
 
-    // ID of currently selected blockface
-    blockfaceId,
-
+    blockfaceId = mapUtil.getBlockfaceIdFromUrl(),
     blockfaceMap = mapModule.create({
         legend: false,
         search: false,
@@ -198,21 +196,11 @@ $(dom.btnToTeammate).click(function(e) {
     showSelectTeammate();
 });
 
-// Keep this URL in sync with src/nyc_trees/apps/survey/urls/blockface.py
-$.getJSON("/blockedge/reserved-blockedges.json")
-    .then(function(data) {
-        var id = parseInt(mapUtil.getBlockfaceIdFromUrl(), 10);
-        for (var i = 0; i < data.length; i++) {
-            var item = data[i];
-            if (item.properties.id === id) {
-                return id;
-            }
-        }
-    }).then(function(blockfaceId) {
-        mapUtil.fetchBlockface(blockfaceId).done(function(blockface) {
-            selectedLayer.addBlockface(blockface);
-        });
+if (blockfaceId) {
+    mapUtil.fetchBlockface(blockfaceId).done(function(blockface) {
+        selectedLayer.addBlockface(blockface);
     });
+}
 
 // There is no attribute for requiring "one or more" of a group of checkboxes to
 // be selected, so we have to handle it ourselves.
