@@ -110,7 +110,9 @@ var dom = {
 
     formTemplate = Handlebars.compile($(dom.treeFormTemplate).html()),
 
-    blockfaceId = undefined,
+    // ID of currently selected blockface
+    blockfaceId,
+
     blockfaceMap = mapModule.create({
         legend: false,
         search: false,
