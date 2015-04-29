@@ -15,6 +15,7 @@ from libs.mixins import NycModel
 
 class Blockface(models.Model):
     geom = models.MultiLineStringField()
+    geom_centroid = models.PointField(null=True)
     is_available = models.BooleanField(default=True)
     expert_required = models.BooleanField(default=False)
     source = models.CharField(max_length=255, default='unknown')

@@ -3,10 +3,12 @@ from __future__ import print_function
 from __future__ import unicode_literals
 from __future__ import division
 
+import sys
+
 from apps.core.models import User
 from apps.users import can_show_full_name
 
-from apps.survey.models import Survey, Territory
+from apps.survey.models import Survey, Territory, Blockface
 
 
 def teammates_for_event(group, event, current_user):
@@ -56,3 +58,22 @@ def group_percent_completed(group):
             float(completed_blocks.count()) / float(group_blocks.count()))
     else:
         return "0.0%"
+
+
+def rebuild_geoms(blockfaces_qs):
+    """Rebuild precomputed columns for all blockfaces"""
+    blocks_count = blockfaces_qs.count()
+    blocks_chunk = int(blocks_count * 0.10)
+
+    sys.stderr.write('Rebuilding blockface geoms...\n')
+
+    for i, block in enumerate(blockfaces_qs.iterator()):
+        block.geom_centroid = block.geom.centroid
+        block.save()
+
+        # Display approximate progress complete
+        if i % blocks_chunk == 0:
+            percent_done = i / blocks_count
+            sys.stderr.write('{0:.0f}%\n'.format(percent_done * 100))
+
+    sys.stderr.write('Done\n')

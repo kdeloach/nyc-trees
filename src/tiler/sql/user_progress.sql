@@ -2,7 +2,10 @@
 -- the latest survey for a blockface
 (SELECT
   DISTINCT ON (block.id)
-  block.geom, block.id,
+  <% if (zoom < 12) { %>
+    block.geom_centroid
+  <% } else { %>block.geom<% } %> as geom,
+  block.id,
   CASE
     WHEN survey.user_id IS NOT DISTINCT FROM <%= user_id %> THEN 'T'
     ELSE 'F'

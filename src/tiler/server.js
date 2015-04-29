@@ -92,7 +92,8 @@ function req2context(req) {
     var context = {
         user_id: get_int_param('user'),
         group_id: get_int_param('group'),
-        is_utf_grid: req.params.format === 'grid.json'
+        is_utf_grid: req.params.format === 'grid.json',
+        zoom: req.params.z
     };
     return context;
 
